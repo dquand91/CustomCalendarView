@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">CustomCalendar</string>
+
+    <string name="g_sunday">Sun</string>
+    <string name="g_monday">Mon</string>
+    <string name="g_tuesday">Tue</string>
+    <string name="g_wednesday">Wed</string>
+    <string name="g_thursday">Thu</string>
+    <string name="g_friday">Fri</string>
+    <string name="g_saturday">Sat</string>
+    <string name="g_income">Income</string>
+    <string name="g_outgo">Outgo</string>
 </resources>

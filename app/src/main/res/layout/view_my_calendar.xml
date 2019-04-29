@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <!-- date toolbar -->
+    <RelativeLayout
+        android:id="@+id/rlCurrentDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/default_screen_padding"
+        android:paddingTop="@dimen/_12sdp"
+        android:paddingRight="@dimen/default_screen_padding"
+        android:paddingBottom="@dimen/_12sdp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- prev button -->
+        <ImageView
+            android:id="@+id/ivPrev"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@mipmap/ic_arrow_left" />
+
+        <!-- date title -->
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/ivNext"
+            android:layout_toRightOf="@+id/ivPrev"
+            android:gravity="center"
+            android:text="2018 / 12"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="#222222" />
+
+        <!-- next button -->
+        <ImageView
+            android:id="@+id/ivNext"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@mipmap/ic_forward"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <!-- days header -->
+    <LinearLayout
+        android:id="@+id/calendarHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/rlCurrentDate">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:text="@string/g_sunday"/>
+
+        <TextView
+            style="@style/HorizontalBreakLine"
+            android:layout_marginStart="@dimen/_1sdp"
+            android:layout_marginLeft="@dimen/_1sdp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:text="@string/g_monday"
+              />
+
+
+        <TextView style="@style/HorizontalBreakLine" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:text="@string/g_tuesday"
+              />
+
+        <TextView style="@style/HorizontalBreakLine" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:text="@string/g_wednesday"
+              />
+
+        <TextView style="@style/HorizontalBreakLine" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:text="@string/g_thursday"
+              />
+
+        <TextView style="@style/HorizontalBreakLine" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:text="@string/g_friday"
+              />
+
+        <TextView style="@style/HorizontalBreakLine" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_1sdp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:text="@string/g_saturday"
+              />
+    </LinearLayout>
+
+    <!-- days view -->
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/gridCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:background="@color/gray"
+            android:overScrollMode="never"
+            app:layout_constraintTop_toBottomOf="@+id/calendarHeader"/>
+
+
+</android.support.constraint.ConstraintLayout>
