@@ -1,2 +1,2 @@
 # CustomCalendarView
-[](./record_Custom_Calendar.gif)
+![](./record_Custom_Calendar.gif)
