@@ -1,2 +1,2 @@
 # CustomCalendarView
-[](./record_Custom_Calendar.webm)
+[](./record_Custom_Calendar.gif)
