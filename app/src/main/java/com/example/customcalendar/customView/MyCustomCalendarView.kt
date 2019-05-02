@@ -11,11 +11,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.customcalendar.R
-import kotlinx.android.synthetic.main.view_my_calendar.view.*
+import com.example.customcalendar.adapter.MyCalendarAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyCustomCalendarView : ConstraintLayout {
+class MyCustomCalendarView : ConstraintLayout, MyCalendarAdapter.ListenerCellSelect {
 
     companion object {
         // Days of 5 Weeks
@@ -28,15 +28,15 @@ class MyCustomCalendarView : ConstraintLayout {
         const val NUM_DAY_OF_WEEK = 7
     }
 
-    public val DEFAULT_DATE_FORMAT = "yyyyMM"
+    public val DEFAULT_DATE_FORMAT = "yyyy/MM"
 
     private var dateFormat = DEFAULT_DATE_FORMAT
 
     private lateinit var btnPrev: ImageView
     private lateinit var btnNext: ImageView
     private lateinit var txtDate: TextView
-    private lateinit var grid: RecyclerView
-    private lateinit var currentDate: Calendar
+    private lateinit var gridRecycler: RecyclerView
+    private lateinit var currentDateCalendar: Calendar
     private var eventHandler: EventBetweenCalendarAndFragment? = null
     private var todayMonth: Int = -1
     private var todayYear: Int = -1
@@ -52,7 +52,7 @@ class MyCustomCalendarView : ConstraintLayout {
 
 
     private fun initView(context: Context?, attrs: AttributeSet? = null){
-        currentDate = Calendar.getInstance().apply {
+        currentDateCalendar = Calendar.getInstance().apply {
             // Tháng hiện tại
             todayMonth = this.get(Calendar.MONTH)
             // Năm hiện tại
@@ -65,11 +65,11 @@ class MyCustomCalendarView : ConstraintLayout {
             btnPrev = findViewById(R.id.ivPrev)
             btnNext = findViewById(R.id.ivNext)
             txtDate = findViewById(R.id.tvDate)
-            grid = findViewById(R.id.gridCalendar)
+            gridRecycler = findViewById(R.id.gridCalendar)
 
             btnNext.setOnClickListener {
                 // Cộng thêm 1 tháng để hiển thị khi bấm nút NEXT
-                currentDate.add(Calendar.MONTH, 1)
+                currentDateCalendar.add(Calendar.MONTH, 1)
 
                 // Báo hiệu cho activity/fragment biết đã bấm nút Next
                 eventHandler?.onCalendarNextPressed()
@@ -79,15 +79,15 @@ class MyCustomCalendarView : ConstraintLayout {
 
             btnPrev.setOnClickListener{
                 // Tương tự nút NEXT
-                currentDate.add(Calendar.MONTH, -1)
+                currentDateCalendar.add(Calendar.MONTH, -1)
                 eventHandler?.onCalendarPreviousPressed()
                 checkStateNextButton()
             }
 
-            // tắt chức năng scroll của RecyclerView (ở đây là grid) đi
-            ViewCompat.setNestedScrollingEnabled(grid, false)
+            // tắt chức năng scroll của RecyclerView (ở đây là gridRecycler) đi
+            ViewCompat.setNestedScrollingEnabled(gridRecycler, false)
 
-            grid.apply {
+            gridRecycler.apply {
                 // định nghĩa gridlayout cho recycler với 7 cột
                 this.layoutManager = GridLayoutManager(context, NUM_DAY_OF_WEEK)
 
@@ -104,10 +104,10 @@ class MyCustomCalendarView : ConstraintLayout {
     // Gọi hàm này sau khi lấy dữ liệu từ API về xong update lại Calendar
     fun updateCalendar(){
         val mCellList = ArrayList<Date>()
-        val mCalendar = currentDate.clone() as Calendar
+        val mCalendar = currentDateCalendar.clone() as Calendar
 
         // determine the cell for current month's beginning
-        // Xác định item (cell) cho tháng bắt đầu hiện tại
+        // Xác định item (cell) bắt đầu cho tháng hiện tại
         mCalendar.set(Calendar.DAY_OF_MONTH, 1)
         val monthBeginningCell = mCalendar.get(Calendar.DAY_OF_WEEK) - 1
 
@@ -121,8 +121,28 @@ class MyCustomCalendarView : ConstraintLayout {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
-        // TODO: Handle push data to adapter of recyclerView
+        val calendarAdapter = MyCalendarAdapter().apply {
+            this.listDates = mCellList
+            this.context = getContext()
+            this.showingDateCalendar = currentDateCalendar
+            this.listener = this@MyCustomCalendarView
+        }
 
+        gridRecycler.adapter = calendarAdapter
+        setHeader(currentDateCalendar)
+
+    }
+
+
+    override fun onDateSelect(selectDate: Date) {
+        // Xử lý sau khi 1 cell item được click
+        val tempAdapter = gridRecycler.adapter as MyCalendarAdapter
+        tempAdapter.selectedDate = selectDate
+        tempAdapter.notifyDataSetChanged()
+
+        val tempCalendar = Calendar.getInstance()
+        tempCalendar.time = selectDate
+        setHeader(tempCalendar)
     }
 
     private fun checkStateNextButton() {
@@ -130,14 +150,15 @@ class MyCustomCalendarView : ConstraintLayout {
         // Điều kiện hiển thị nút NEXT:
         //     Nếu trang calendar đang hiển thị là tháng hiện tại (now, the present) => ẩn nút Next
         //      Còn lại thì hiển thị nút NEXT
-        val currentMonth = currentDate.get(Calendar.MONTH)
-        val currentYear = currentDate.get(Calendar.YEAR)
+        val currentMonth = currentDateCalendar.get(Calendar.MONTH)
+        val currentYear = currentDateCalendar.get(Calendar.YEAR)
         if (currentMonth == todayMonth && currentYear == todayYear) {
             btnNext.visibility = View.INVISIBLE
         } else {
             btnNext.visibility = View.VISIBLE
         }
     }
+
 
 
 

@@ -7,4 +7,12 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#D8D8D8</color>
+    <color name="blue">#0789F7</color>
+
+
+    <color name="calendar_highlight">#00ffdd</color>
+    <color name="calendar_date_disable">#646464</color>
+    <color name="calendar_date_enable_normal">#000000</color>
+    <color name="calendar_background_item_enable">#FFFFFF</color>
+    <color name="calendar_background_item_disable">#C9BFBF</color>
 </resources>
